@@ -1,0 +1,331 @@
+
+Input: Ta có thiết kế bảng biểu chi tiết như sau:
+
+CREATE TABLE Location (
+    ID VARCHAR(36) PRIMARY KEY,
+    LocationCode VARCHAR(50) NOT NULL COMMENT 'Mã địa bàn',
+    LocationName VARCHAR(255) NOT NULL COMMENT 'Tên địa bàn',
+    Level INT NOT NULL COMMENT 'Cấp (Tỉnh, Huyện, Xã)',
+    Description TEXT COMMENT 'Mô tả',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Địa bàn';
+
+CREATE TABLE Organization (
+    ID VARCHAR(36) PRIMARY KEY,
+    OrgCode VARCHAR(50) NOT NULL COMMENT 'Mã đơn vị',
+    OrgName VARCHAR(255) NOT NULL COMMENT 'Tên đơn vị',
+    IsParent BOOLEAN NOT NULL COMMENT 'Là đơn vị cha',
+    ParentID VARCHAR(36) COMMENT 'ID đơn vị cha',
+    SortOrder INT COMMENT 'Thứ tự sắp xếp',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Đơn vị';
+
+CREATE TABLE Position (
+    ID VARCHAR(36) PRIMARY KEY,
+    PositionCode VARCHAR(50) NOT NULL COMMENT 'Mã chức vụ',
+    PositionName VARCHAR(255) NOT NULL COMMENT 'Tên chức vụ',
+    YearsInPosition INT COMMENT 'Số năm giữ chức vụ',
+    SortOrder INT COMMENT 'Thứ tự sắp xếp',
+    Notes TEXT COMMENT 'Ghi chú',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Chức vụ';
+
+CREATE TABLE Ethnicity (
+    ID VARCHAR(36) PRIMARY KEY,
+    EthnicityCode VARCHAR(50) NOT NULL COMMENT 'Mã dân tộc',
+    EthnicityName VARCHAR(255) NOT NULL COMMENT 'Tên dân tộc',
+    SortOrder INT COMMENT 'Thứ tự sắp xếp',
+    Notes TEXT COMMENT 'Ghi chú',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Dân tộc';
+
+CREATE TABLE Employee (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeCode VARCHAR(50) NOT NULL COMMENT 'Mã nhân viên',
+    EmployeeName VARCHAR(255) NOT NULL COMMENT 'Tên nhân viên',
+    FullName VARCHAR(255) NOT NULL COMMENT 'Họ tên',
+    Alias VARCHAR(255) COMMENT 'Bí danh',
+    BirthDate DATE COMMENT 'Ngày sinh',
+    Gender INT COMMENT 'Giới tính',
+    Address TEXT COMMENT 'Địa chỉ',
+    BankAccount VARCHAR(255) COMMENT 'Số tài khoản ngân hàng',
+    TaxCode VARCHAR(50) COMMENT 'Mã số thuế',
+    PositionID VARCHAR(36) COMMENT 'Chức vụ',
+    EthnicityID VARCHAR(36) COMMENT 'Dân tộc',
+    ProvinceID VARCHAR(36) COMMENT 'Tỉnh',
+    DistrictID VARCHAR(36) COMMENT 'Huyện',
+    WardID VARCHAR(36) COMMENT 'Xã',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Nhân viên';
+
+CREATE TABLE Benefit (
+    ID VARCHAR(36) PRIMARY KEY,
+    BenefitCode VARCHAR(50) NOT NULL COMMENT 'Mã phụ cấp',
+    BenefitName VARCHAR(255) NOT NULL COMMENT 'Tên phụ cấp',
+    BenefitType VARCHAR(50) NOT NULL COMMENT 'Loại phụ cấp',
+    YearsReceived INT COMMENT 'Số năm hưởng',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Phụ cấp';
+
+CREATE TABLE SalaryHistory (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeID VARCHAR(36) NOT NULL COMMENT 'Nhân viên',
+    Salary DECIMAL(15, 2) NOT NULL COMMENT 'Tiền lương',
+    SalaryType VARCHAR(50) NOT NULL COMMENT 'Loại lương',
+    StartDate DATE NOT NULL COMMENT 'Ngày bắt đầu',
+    EndDate DATE COMMENT 'Ngày kết thúc',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Quá trình lương';
+
+CREATE TABLE BenefitHistory (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeID VARCHAR(36) NOT NULL COMMENT 'Nhân viên',
+    BenefitAmount DECIMAL(15, 2) NOT NULL COMMENT 'Tiền phụ cấp',
+    BenefitID VARCHAR(36) NOT NULL COMMENT 'Phụ cấp',
+    StartDate DATE NOT NULL COMMENT 'Ngày bắt đầu',
+    EndDate DATE COMMENT 'Ngày kết thúc',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Quá trình phụ cấp';
+
+CREATE TABLE WorkingHistory (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeID VARCHAR(36) NOT NULL COMMENT 'Nhân viên',
+    PositionID VARCHAR(36) NOT NULL COMMENT 'Chức vụ',
+    WorkLocation VARCHAR(255) NOT NULL COMMENT 'Vị trí công tác',
+    StartDate DATE NOT NULL COMMENT 'Ngày bắt đầu',
+    EndDate DATE COMMENT 'Ngày kết thúc',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Quá trình công tác';
+
+CREATE TABLE RewardHistory (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeID VARCHAR(36) NOT NULL COMMENT 'Nhân viên',
+    PositionID VARCHAR(36) NOT NULL COMMENT 'Chức vụ',
+    Reward VARCHAR(255) NOT NULL COMMENT 'Khen thưởng',
+    RewardType VARCHAR(50) NOT NULL COMMENT 'Loại khen thưởng',
+    StartDate DATE NOT NULL COMMENT 'Từ ngày',
+    EndDate DATE COMMENT 'Đến ngày',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Quá trình khen thưởng';
+
+CREATE TABLE DisciplineHistory (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeID VARCHAR(36) NOT NULL COMMENT 'Nhân viên',
+    PositionID VARCHAR(36) NOT NULL COMMENT 'Chức vụ',
+    Discipline VARCHAR(255) NOT NULL COMMENT 'Kỷ luật',
+    DisciplineType VARCHAR(50) NOT NULL COMMENT 'Loại kỷ luật',
+    StartDate DATE NOT NULL COMMENT 'Từ ngày',
+    EndDate DATE COMMENT 'Đến ngày',
+    Notes TEXT COMMENT 'Ghi chú',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Quá trình kỷ luật';
+
+Input: Ta có thiết kế chi tiết các index như sau:
+
+CREATE INDEX idx_Organization_ParentID ON Organization (ParentID);
+
+CREATE INDEX idx_Position_PositionCode ON Position (PositionCode);
+CREATE INDEX idx_Position_OrganizationID ON Position (OrganizationID);
+
+CREATE INDEX idx_Ethnicity_EthnicityCode ON Ethnicity (EthnicityCode);
+
+CREATE INDEX idx_Employee_EmployeeCode ON Employee (EmployeeCode);
+CREATE INDEX idx_Employee_PositionID ON Employee (PositionID);
+CREATE INDEX idx_Employee_EthnicityID ON Employee (EthnicityID);
+CREATE INDEX idx_Employee_ProvinceID ON Employee (ProvinceID);
+CREATE INDEX idx_Employee_DistrictID ON Employee (DistrictID);
+CREATE INDEX idx_Employee_WardID ON Employee (WardID);
+CREATE INDEX idx_Employee_OrganizationID ON Employee (OrganizationID);
+
+CREATE INDEX idx_Benefit_OrganizationID ON Benefit (OrganizationID);
+
+CREATE INDEX idx_SalaryHistory_EmployeeID ON SalaryHistory (EmployeeID);
+CREATE INDEX idx_SalaryHistory_OrganizationID ON SalaryHistory (OrganizationID);
+
+CREATE INDEX idx_BenefitHistory_EmployeeID ON BenefitHistory (EmployeeID);
+CREATE INDEX idx_BenefitHistory_BenefitID ON BenefitHistory (BenefitID);
+CREATE INDEX idx_BenefitHistory_OrganizationID ON BenefitHistory (OrganizationID);
+
+CREATE INDEX idx_WorkingHistory_EmployeeID ON WorkingHistory (EmployeeID);
+CREATE INDEX idx_WorkingHistory_PositionID ON WorkingHistory (PositionID);
+CREATE INDEX idx_WorkingHistory_OrganizationID ON WorkingHistory (OrganizationID);
+
+CREATE INDEX idx_RewardHistory_EmployeeID ON RewardHistory (EmployeeID);
+CREATE INDEX idx_RewardHistory_PositionID ON RewardHistory (PositionID);
+CREATE INDEX idx_RewardHistory_OrganizationID ON RewardHistory (OrganizationID);
+
+CREATE INDEX idx_DisciplineHistory_EmployeeID ON DisciplineHistory (EmployeeID);
+CREATE INDEX idx_DisciplineHistory_PositionID ON DisciplineHistory (PositionID);
+CREATE INDEX idx_DisciplineHistory_OrganizationID ON DisciplineHistory (OrganizationID);
+
+Input: Ta có thiết kế chi tiết khóa ngoại như sau:
+
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_Position FOREIGN KEY (PositionID) REFERENCES Position(ID);
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_Ethnicity FOREIGN KEY (EthnicityID) REFERENCES Ethnicity(ID);
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_Province FOREIGN KEY (ProvinceID) REFERENCES Location(ID);
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_District FOREIGN KEY (DistrictID) REFERENCES Location(ID);
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_Ward FOREIGN KEY (WardID) REFERENCES Location(ID);
+ALTER TABLE Employee ADD CONSTRAINT FK_Employee_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE Benefit ADD CONSTRAINT FK_Benefit_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE SalaryHistory ADD CONSTRAINT FK_SalaryHistory_Employee FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+ALTER TABLE SalaryHistory ADD CONSTRAINT FK_SalaryHistory_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE BenefitHistory ADD CONSTRAINT FK_BenefitHistory_Employee FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+ALTER TABLE BenefitHistory ADD CONSTRAINT FK_BenefitHistory_Benefit FOREIGN KEY (BenefitID) REFERENCES Benefit(ID);
+ALTER TABLE BenefitHistory ADD CONSTRAINT FK_BenefitHistory_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE WorkingHistory ADD CONSTRAINT FK_WorkingHistory_Employee FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+ALTER TABLE WorkingHistory ADD CONSTRAINT FK_WorkingHistory_Position FOREIGN KEY (PositionID) REFERENCES Position(ID);
+ALTER TABLE WorkingHistory ADD CONSTRAINT FK_WorkingHistory_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE RewardHistory ADD CONSTRAINT FK_RewardHistory_Employee FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+ALTER TABLE RewardHistory ADD CONSTRAINT FK_RewardHistory_Position FOREIGN KEY (PositionID) REFERENCES Position(ID);
+ALTER TABLE RewardHistory ADD CONSTRAINT FK_RewardHistory_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+ALTER TABLE DisciplineHistory ADD CONSTRAINT FK_DisciplineHistory_Employee FOREIGN KEY (EmployeeID) REFERENCES Employee(ID);
+ALTER TABLE DisciplineHistory ADD CONSTRAINT FK_DisciplineHistory_Position FOREIGN KEY (PositionID) REFERENCES Position(ID);
+ALTER TABLE DisciplineHistory ADD CONSTRAINT FK_DisciplineHistory_Organization FOREIGN KEY (OrganizationID) REFERENCES Organization(ID);
+
+Input: Ta có số lượng bản ghi của từng bảng như sau:
+
+Bảng Employee: 500,000 bản ghi
+Bảng Location: 12,000 bản ghi
+Bảng Organization: 3000 bản ghi
+Bảng Position: 1000 bản ghi
+Bảng Ethnicity: 54 bản ghi
+Bảng Benefit: 2000 bản ghi
+Bảng SalaryHistory: 1000,000 bản ghi
+Bảng BenefitHistory: 800,000 bản ghi
+Bảng WorkingHistory: 700,000 bản ghi
+Bảng RewardHistory: 600,000 bản ghi
+Bảng DisciplineHistory: 50,000 bản ghi
+
+Output: Hãy tối ưu procedure sau để
+- Tăng tốc độ truy vấn
+- Tận dụng được tối đa index của các bảng biểu
+- Tránh được các lỗi deadlock 
+- Sử dụng khóa ngoại cho hợp lý
+
+Nội dung procedure là:
+
+CREATE PROCEDURE Proc_GetInfoEmployeeReport (IN $Year int, IN $FromDate datetime, IN $ToDate datetime, IN $OrganizationID varchar(36))
+BEGIN
+  
+  DROP TEMPORARY TABLE IF EXISTS tempPosition;
+  CREATE TEMPORARY TABLE tempPosition
+  SELECT
+  ID,
+  PositionCode,
+  PositionName,
+  YearsInPosition,
+  SortOrder,
+  Notes,
+  CreatedDate,
+  CreatedBy,
+  ModifiedDate,
+  ModifiedBy
+  FROM Position;  
+
+  
+  DROP TEMPORARY TABLE IF EXISTS tempBenefit;
+  CREATE TEMPORARY TABLE tempBenefit
+  SELECT
+  ID,
+  BenefitCode,
+  BenefitName,
+  BenefitType,
+  YearsReceived,
+  Notes,
+  OrganizationID,
+  CreatedDate,
+  CreatedBy,
+  ModifiedDate,
+  ModifiedBy
+  FROM Benefit;
+
+  
+  DROP TEMPORARY TABLE IF EXISTS tempEthnicity;
+  CREATE TEMPORARY TABLE tempEthnicity
+  SELECT
+  ID,
+  EthnicityCode,
+  EthnicityName,
+  SortOrder,
+  Notes,
+  CreatedDate,
+  CreatedBy,
+  ModifiedDate,
+  ModifiedBy
+  FROM Ethnicity;
+  
+  DROP TEMPORARY TABLE IF EXISTS tempSalaryHistory;
+  CREATE TEMPORARY TABLE tempSalaryHistory
+  SELECT
+  *
+  FROM SalaryHistory a 
+  INNER JOIN Employee e ON a.EmployeeID = e.ID
+  INNER JOIN Position p ON e.PositionID = p.ID
+  INNER JOIN WorkingHistory w ON w.EmployeeID = e.ID
+  INNER JOIN RewardHistory r ON r.EmployeeID = e.ID
+  INNER JOIN BenefitHistory t ON t.EmployeeID = e.ID
+  WHERE e.OrganizationID = $OrganizationID;
+
+  
+  SELECT t.FullName, t.PositionName, t.Salary, t.BenefitAmount, t.Reward, t.WorkLocation FROM tempSalaryHistory t
+  where (t.FromDate >= $FromDate and t.ToDate <= $ToDate) and Year(t.FromDate) = $Year; 
+
+END;
+
+Lưu ý:
+- Chỉ sinh kết quả, không cần mô tả
+- Tạo thêm các bảng tạm và đánh index trên bảng tạm nếu bảng chính đó nhiều dữ liệu hoặc sử dụng nhiều lần
+- Thay thế các câu lệnh "select *" bằng cụ thể các cột dùng đến trong store
+- Tận dụng các index để join cho tăng tốc độ
+- Bổ sung điều kiện where OrganizationID vào các câu lệnh tạo bảng tạm để giới hạn dữ liệu

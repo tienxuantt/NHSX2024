@@ -1,0 +1,121 @@
+Thiết kế bảng dữ liệu trong mysql gồm các bảng sau:
+
+Địa bàn (Location):
+	ID là khóa chính kiểu uuid (varchar(36))
+	Mã địa bàn
+	Tên địa bàn
+	Cấp (Tỉnh, Huyện, Xã) kiểu int
+	Mô tảz
+	
+Đơn vị (Organization):
+	ID là khóa chính kiểu uuid
+	Mã đơn vị
+	Tên đơn vị
+	Là đơn vị cha (IsParent)
+	ID đơn vị cha (ParentID)
+	Thứ tự sắp xếp
+
+Chức vụ (Position):
+	ID
+	Mã chức vụ
+	Tên chức vụ
+	Sô năm giữ chức vụ
+	Thứ tự sắp xếp
+	Ghi chú
+	
+Dân tộc:
+	ID
+	Mã dân tộc
+	Tên dân tộc
+	Thứ tự sắp xếp
+	Ghi chú
+	
+Nhân viên (Employee): 
+	ID là khóa chính kiểu uuid
+	Mã nhân viên
+	Tên nhân viên
+	Họ tên
+	Ngày sinh
+	Giới tính kiểu int
+	Địa chỉ
+	Số tài khoản ngân hàng
+	Mã số thuế
+	Chức vụ (khóa ngoại)
+	Dân tộc (khóa ngoại)
+	Tỉnh khóa ngoại (Location)
+	Huyện khóa ngoại (Location)
+	Xã khóa ngoại (Location)
+	OrganizationID khóa ngoại
+	
+Phụ cấp (Benefit):
+	ID là khóa chính kiểu uuid
+	Mã phụ cấp
+	Tên phụ cấp
+	Loại phụ cấp
+	Số năm hưởng
+	Ghi chú
+	OrganizationID khóa ngoại
+	
+Quá trình lương (SalaryHistory):
+	ID là khóa chính kiểu uuid
+	Nhân viên
+	Tiền lương
+	Loại lương
+	Ngày bắt đầu
+	Ngày kết thúc
+	Ghi 
+	OrganizationID khóa ngoại
+	
+Quá trình phụ cấp (BenefitHistory):
+	ID là khóa chính kiểu uuid
+	Nhân viên (Khóa ngoại)
+	Tiền phụ cấp
+	Phụ cấp (Khóa ngoại)
+	Ngày bắt đầu
+	Ngày kết thúc
+	Ghi chú
+	OrganizationID khóa ngoại
+	
+Quá trình công tác (WorkingHistory):
+	ID là khóa chính kiểu uuid
+	Nhân viên
+	Chức vụ
+	Vị trí công tác
+	Ngày bắt đầu
+	Ngày kết thúc
+	Ghi chú
+	OrganizationID khóa ngoại
+	
+Quá trình khen thưởng 
+	ID 
+	Nhân viên
+	Chức vụ
+	Khen thưởng 
+	Loại khen thưởng
+	Từ ngày
+	Đến ngày
+	Ghi chú
+	OrganizationID khóa ngoại
+	
+Quá trình kỷ luật
+	ID 
+	Nhân viên
+	Chức vụ
+	Kỷ luật
+	Loại kỷ luật
+	Từ ngày
+	Đến ngày
+	Ghi chú
+	OrganizationID khóa ngoại
+
+Lưu ý:
+- Viết câu lệnh đánh index trên khóa chính và cột ID đơn vị bằng câu lệnh Alter Table
+- Viết câu lệnh tạo khóa ngoại bằng câu lệnh Alter Table
+- Tên bảng và tên cột là tiếng anh
+- Thêm mô tả tiếng việt cho các cột, bảng
+- Mặc định đánh khóa chính cho các cột ID
+- Các bảng đều thêm 4 cột Ngày tạo, Người tạo, Ngày cập nhật (ModifiedDate), Người cập nhật
+
+
+Lưu ý khi code:
+- Sắp xếp các bảng danh mục lên đầu, các bảng chứa khóa ngoại xuống cuối
