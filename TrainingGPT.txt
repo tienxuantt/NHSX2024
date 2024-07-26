@@ -1,0 +1,62 @@
+Input: Ta có thiết kế bảng biểu chi tiết như sau:
+
+CREATE TABLE Organization (
+    ID VARCHAR(36) PRIMARY KEY,
+    OrgCode VARCHAR(50) NOT NULL COMMENT 'Mã đơn vị',
+    OrgName VARCHAR(255) NOT NULL COMMENT 'Tên đơn vị',
+    IsParent BOOLEAN NOT NULL COMMENT 'Là đơn vị cha',
+    ParentID VARCHAR(36) COMMENT 'ID đơn vị cha',
+    SortOrder INT COMMENT 'Thứ tự sắp xếp',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Đơn vị';
+
+CREATE TABLE Employee (
+    ID VARCHAR(36) PRIMARY KEY,
+    EmployeeCode VARCHAR(50) NOT NULL COMMENT 'Mã nhân viên',
+    EmployeeName VARCHAR(255) NOT NULL COMMENT 'Tên nhân viên',
+    FullName VARCHAR(255) NOT NULL COMMENT 'Họ tên',
+    Alias VARCHAR(255) COMMENT 'Bí danh',
+    BirthDate DATE COMMENT 'Ngày sinh',
+    Gender INT COMMENT 'Giới tính',
+    Address TEXT COMMENT 'Địa chỉ',
+    BankAccount VARCHAR(255) COMMENT 'Số tài khoản ngân hàng',
+    TaxCode VARCHAR(50) COMMENT 'Mã số thuế',
+    PositionID VARCHAR(36) COMMENT 'Chức vụ',
+    EthnicityID VARCHAR(36) COMMENT 'Dân tộc',
+    ProvinceID VARCHAR(36) COMMENT 'Tỉnh',
+    DistrictID VARCHAR(36) COMMENT 'Huyện',
+    WardID VARCHAR(36) COMMENT 'Xã',
+    OrganizationID VARCHAR(36) COMMENT 'Đơn vị',
+    CreatedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Ngày tạo',
+    CreatedBy VARCHAR(255) COMMENT 'Người tạo',
+    ModifiedDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Ngày cập nhật',
+    ModifiedBy VARCHAR(255) COMMENT 'Người cập nhật'
+) COMMENT 'Nhân viên';
+
+Hãy tối ưu procedure sau:
+
+DROP PROCEDURE IF EXISTS Proc_GetAllEmployee;
+CREATE PROCEDURE Proc_GetAllEmployee (IN $OrganizationID varchar(36))
+SQL SECURITY INVOKER
+BEGIN
+   
+   DROP TEMPORARY TABLE IF EXISTS tempOrgan;
+   CREATE TEMPORARY TABLE tempOrgan
+   SELECT * FROM organization o WHERE ID = $OrganizationID;
+
+   DROP TEMPORARY TABLE IF EXISTS tempEmployee;
+   CREATE TEMPORARY TABLE tempEmployee
+   SELECT * FROM employee e WHERE e.OrganizationID = $OrganizationID;
+
+   SELECT e.FullName, e.EmployeeCode, e.EmployeeName, o.OrgCode, o.OrgName 
+   FROM employee e INNER JOIN tempOrgan o ON OrganizationID = o.ID
+   WHERE e.FullName LIKE '%demo%';
+
+END ;
+
+Lưu ý:
+- Thay thế select * bằng select các cột đang dùng trong store
+- Vẫn giữ nguyên các bảng tạm trên store
